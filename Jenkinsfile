@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Git') {
           steps{
-            git 'https://github.com/vjlh/Mingeso.git'
+            git 'https://github.com/vjlh/Mingeso_Frontend.git'
             echo 'Obteniendo repositorio ...'
           }
         }
