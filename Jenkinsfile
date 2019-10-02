@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Git') {
           steps{
-            git 'https://github.com/vjlh/Mingeso_Frontend.git'
+            git 'https://github.com/vjlh/HotelFrontend.git'
             echo 'Obteniendo repositorio ...'
           }
         }
@@ -25,7 +25,7 @@ pipeline {
               sh 'sudo rm -rf /var/www/mingeso/html'
               sh 'sudo cp -r dist /var/www/mingeso/html'
               sh 'sudo rm -rf *'
-              echo 'deployed'
+              echo 'Desplegado'
           }
       }
       /*stage('Test'){
