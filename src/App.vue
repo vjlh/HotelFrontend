@@ -1,31 +1,29 @@
 <template>
-  <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <router-view/>
-    </v-content>
+<v-img
+      :src="require('@/assets/images/background.jpg')"
+    >
+  <v-app  style="background: #0000">
+    <v-layout>
+      <v-flex md3>
+        <Sidebar/>        
+      </v-flex>
+      <v-flex md9>
+        <v-content>
+          <router-view/>
+        </v-content>
+      </v-flex>
+    </v-layout>
   </v-app>
+</v-img>
 </template>
 
 <script>
-
+import Sidebar from './components/Sidebar'
 export default {
   name: 'App',
+  components:{
+    Sidebar
+  },
   data: () => ({
     //
   }),

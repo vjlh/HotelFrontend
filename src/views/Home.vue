@@ -1,13 +1,15 @@
 <template>
-  <HelloWorld />
+<v-container style="margin-left:-35px">
+  <Rack />  
+</v-container>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
+import Rack from '../components/Rack';
 
 export default {
   components: {
-    HelloWorld,
+    Rack,
   },
 };
 </script>
