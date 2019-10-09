@@ -8,7 +8,6 @@
         :selectedDate='selectedDate' 
         :group='group'
         :renderCell='onRenderCell'
-        :resourceHeaderTemplate='resourceHeaderTemplate'
         :headerRows='headerRows'
         allowResizing=true
         >
@@ -17,7 +16,6 @@
             option='TimelineMonth' 
             interval=3
             allowVirtualScrolling
-            :eventTemplate='timelineEventTemplate'
             ></e-view>
         </e-views>
         <e-resources>
@@ -53,7 +51,7 @@
         }
     });
      
-    var timelineEventTemplateVue = Vue.component('timelineTemplate', {
+    /*var timelineEventTemplateVue = Vue.component('timelineTemplate', {
         template: `
             <div class='template-wrap-2' style="{background: '#51d1f6'}">
                 <div class="subject" style="{background: '#000000'};">{{data.Subject}}</div>
@@ -77,16 +75,16 @@
                 data: {}
             };
         }
-    });
+    })*/;
     
     export default {
         data() {
             return {
-                  timelineEventTemplate: function (e) {
+                  /*timelineEventTemplate: function (e) {
                     return {
                         template: timelineEventTemplateVue
                     };
-                },
+                },*/
                 headerRows: [{ option: 'Month' }, { option: 'Date' }],
                 selectedDate: new Date(Date.now()),
                 group: {
@@ -112,11 +110,11 @@
                     { text: '15', id: 15, color: '#51d1f6', capacity: 30, type: 'Conference' },
                     { text: '16', id: 16, color: '#51d1f6', capacity: 25, type: 'Conference' }   
                 ],
-                resourceHeaderTemplate: function(e){
+                /*resourceHeaderTemplate: function(e){
                      return {
                         template: resourceHeaderTemplateVue
                     };
-                },
+                },*/
                 eventSettings: {
                     dataSource: [{EventName: "Reserva 2", StartTime:new Date(2019, 9, 18), EndTime:new Date(2019, 9, 29), RoomId:1, id:1, IsAllDay:true, Subject:"Reserva 1"},
                                  {EventName: "Reserva 1", StartTime:new Date(Date.now()),  EndTime:new Date(2019, 9, 10), RoomId:1, id:2, IsAllDay:true, Subject:"Reserva 2"},
