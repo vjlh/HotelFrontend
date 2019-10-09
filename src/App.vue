@@ -1,11 +1,7 @@
 <template>
-<v-img
-      :src="require('@/assets/images/background.jpg')"
-    >
   <v-app  style="background: #0000">
     <Sidebar/>                
   </v-app>
-</v-img>
 </template>
 
 <script>
