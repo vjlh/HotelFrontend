@@ -17,9 +17,9 @@
     "@syncfusion/ej2-vue-navigations": "^17.3.14",
     "@syncfusion/ej2-vue-popups": "^17.3.14",
     "@syncfusion/ej2-vue-schedule": "^17.3.14",
-    "cldr-data": "^35.1.0",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
+    "vue-loader": "^15.7.1",
     "vue-router": "^3.0.3",
     "vuetify": "^2.0.0",
     "vuex": "^3.0.1"
