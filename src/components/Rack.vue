@@ -26,7 +26,7 @@
             title='Número de habitación' 
             name='MeetingRoom' 
             :dataSource='ownerDataSource' 
-            textField='text' 
+            textField='id' 
             idField='id' 
             colorField='color'>
             </e-resource>
@@ -58,7 +58,7 @@
     var resourceHeaderTemplateVue = Vue.component('headerTemplate', {
         template: 
                `<div class='template-wrap'>
-                    <div class="room-name">{{data.resourceData.text}}</div>
+                    <div class="room-name">{{data.resourceData.id}}</div>
                     <div class="room-type">{{data.resourceData.type}}</div>
                     <div class="room-capacity">{{data.resourceData.capacity}}</div>
                 </div>`,
@@ -100,32 +100,28 @@
             }
         },
         methods: {
+             ...mapMutations(['AgregarReserva']),
             onRenderCell: function(args){
                 if (args.elementType === 'emptyCells' && args.element.classList.contains('e-resource-left-td')) {
                     let target = args.element.querySelector('.e-resource-text');
                     target.innerHTML = '<div class="name">Habitación</div><div class="type">Tipo</div><div class="capacity">Capacidad</div>';
                     }
             },
-            datasource1(){
-                return this.datasource
-            },
-            onAddClick: function () {
-                console.log("funciona")
-                this.$refs.scheduleObj.addEvent(Data);
+            datasource(){
+                var algo = this.dataSource
+                this.eventSettings.dataSource = algo
             },
             //scheduleObj.refreshEvents();
         },
+
         computed:{
             ...mapState(['ownerDataSource','dataSource']),
         },
         provide: {
             schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
         },
-        mounted() {
-            var algo = this.dataSource
-            console.log(algo)
-            console.log(this.eventSettings.datasource)
-            this.eventSettings.datasource = algo
+        beforeMount() {
+            this.datasource()
         },
     }
 </script>

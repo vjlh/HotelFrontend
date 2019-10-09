@@ -46,7 +46,7 @@
               
               <v-col cols="12" sm="5">
                 <v-autocomplete
-                  :items="['1', '2', '3', '4', '101', '202', '303', '404', '505']"
+                  :items="rooms"
                   label="Habitación"
                   v-model="habitaciones"
                   multiple
@@ -107,6 +107,7 @@
 
 </template>
 <script>
+  import {mapState, mapMutations} from 'vuex';
   export default {
     data () {
       return {
@@ -118,6 +119,7 @@
     },
 
     computed: {
+      ...mapState(['ownerDataSource']),
       
     },
     methods: {
@@ -128,11 +130,11 @@
           var datos = {Fechai: fechai, Fechaf: fechaf, Habitacion:this.habitaciones[i]}
           this.reservas.push(datos)
         }        
-        console.log(this.reservas)
         this.date = []
         this.habitaciones = []
+        console.log(this.reservas)
 
-      }
+      },
     },
   }
 </script>
