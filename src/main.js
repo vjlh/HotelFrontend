@@ -9,9 +9,9 @@ import { loadCldr} from '@syncfusion/ej2-base';
 
 loadCldr(
     require('cldr-data/supplemental/numberingSystems.json'),
-    require('cldr-data/main/es/ca-gregorian.json'),
-    require('cldr-data/main/es/numbers.json'));
-    require('cldr-data/main/es/timeZoneNames.json');
+    require('cldr-data/main/es-CL/ca-gregorian.json'),
+    require('cldr-data/main/es-CL/numbers.json'));
+    require('cldr-data/main/es-CL/timeZoneNames.json');
 
 /*import Highcharts from "highcharts";
 import Gantt from "highcharts/modules/gantt";

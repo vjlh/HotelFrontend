@@ -1,51 +1,50 @@
 <template>
-    <v-container>
-            <ejs-schedule 
-                id='Schedule' 
-                ref='ScheduleObj' 
-                width='100%' 
-                height='700px'
-                :eventSettings='eventSettings' 
-                :selectedDate='selectedDate' 
-                :group='group'
-                :renderCell='onRenderCell'
-                :resourceHeaderTemplate='resourceHeaderTemplate'
-                :headerRows='headerRows'
-                >
-                <e-views>
-                    <e-view 
-                    option='TimelineMonth' 
-                    interval=3
-                    allowVirtualScrolling></e-view>
-                </e-views>
-                <e-resources>
-                    <e-resource 
-                    field='RoomId' 
-                    title='Número de habitación' 
-                    name='MeetingRoom' 
-                    :dataSource='ownerDataSource' 
-                    textField='text' 
-                    idField='id' 
-                    colorField='color'>
-                    </e-resource>
-                </e-resources>
-            </ejs-schedule>
-    </v-container>
+    <ejs-schedule 
+        id='Schedule' 
+        ref='ScheduleObj' 
+        width='100%' 
+        height='600px'
+        :eventSettings='eventSettings' 
+        :selectedDate='selectedDate' 
+        :group='group'
+        :renderCell='onRenderCell'
+        :resourceHeaderTemplate='resourceHeaderTemplate'
+        :headerRows='headerRows'
+        allowResizing=true
+        >
+        <e-views>
+            <e-view 
+            option='TimelineMonth' 
+            interval=3
+            allowVirtualScrolling
+            :eventTemplate='timelineEventTemplate'
+            ></e-view>
+        </e-views>
+        <e-resources>
+            <e-resource 
+            allowMultiple=true
+            field='RoomId' 
+            title='Número de habitación' 
+            name='MeetingRoom' 
+            :dataSource='ownerDataSource' 
+            textField='text' 
+            idField='id' 
+            colorField='color'>
+            </e-resource>
+        </e-resources>
+    </ejs-schedule>
 </template>
 <script>
     import Vue from 'vue';
     import { SchedulePlugin, TimelineViews, TimelineMonth, Resize, DragAndDrop } from '@syncfusion/ej2-vue-schedule';
     import { L10n } from '@syncfusion/ej2-base';
-    /*import * as numberingSystems from './numberingSystems.json';
-    import * as gregorian from './ca-gregorian.json';
-    import * as numbers from './numbers.json';
-    import * as timeZoneNames from './timeZoneNames.json';*/
     Vue.use(SchedulePlugin);
 
     //loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
     L10n.load({
-        'es-US': {
+        'es-CL': {
             'schedule': {
+                'addTitle' : 'Nombre Reservante',
                 'saveButton': 'Guardar',
                 'cancelButton': 'Cerrar',
                 'deleteButton': 'Eliminar',
@@ -53,6 +52,19 @@
             },
         }
     });
+     
+    var timelineEventTemplateVue = Vue.component('timelineTemplate', {
+        template: `
+            <div class='template-wrap-2' style="{background: '#51d1f6'}">
+                <div class="subject" style="{background: '#000000'};">{{data.Subject}}</div>
+            </div>`,
+        data() {
+            return {
+                data: {}
+            };
+        }
+    });
+
     var resourceHeaderTemplateVue = Vue.component('headerTemplate', {
         template: 
                `<div class='template-wrap'>
@@ -70,6 +82,11 @@
     export default {
         data() {
             return {
+                  timelineEventTemplate: function (e) {
+                    return {
+                        template: timelineEventTemplateVue
+                    };
+                },
                 headerRows: [{ option: 'Month' }, { option: 'Date' }],
                 selectedDate: new Date(Date.now()),
                 group: {
@@ -105,6 +122,7 @@
                                  {EventName: "Reserva 1", StartTime:new Date(Date.now()),  EndTime:new Date(2019, 9, 10), RoomId:1, id:2, IsAllDay:true, Subject:"Reserva 2"},
                                  {EventName: "Reserva 3", StartTime:new Date(2019, 9, 18),  EndTime:new Date(2019, 9, 23), RoomId:2, id:3, IsAllDay:true, Subject:"Reserva 3"},
                                  {EventName: "Reserva 3", StartTime:new Date(2019, 9, 8),  EndTime:new Date(2019, 9, 28), RoomId:4, id:4, IsAllDay:true, Subject:"Reserva 4"},],
+                    enableTooltip: true,
                     fields: {
                     id: 'Id',
                     subject: { name: 'Subject', title: 'Nombre',validation: { required: true }},
@@ -123,7 +141,8 @@
                     let target = args.element.querySelector('.e-resource-text');
                     target.innerHTML = '<div class="name">Habitación</div><div class="type">Tipo</div><div class="capacity">Capacidad</div>';
                 }
-            }
+            },
+            //scheduleObj.refreshEvents();
         },
         provide: {
             schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
@@ -140,16 +159,17 @@
   @import "../../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
   @import "../../node_modules/@syncfusion/ej2-vue-popups/styles/material.css";
   @import "../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css";
-
   .e-schedule .e-timeline-month-view .e-resource-left-td {
         vertical-align: bottom;
         width: 300px;
+        
     }
 
     .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text {
         display: flex;
         font-weight: 500;
         padding: 0;
+        
     }
 
     .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text>div {
@@ -161,16 +181,19 @@
         height: 36px;
         line-height: 40px;
         padding-left: 5px;
+        /*background: #c7add8;*/
     }
 
     .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text>div:last-child {
         border-right: 0;
+        
     }
 
     .e-schedule .template-wrap {
         display: flex;
         height: 100%;
         text-align: left;
+        
     }
     .e-schedule .template-wrap>div {
         text-align: center;
@@ -181,39 +204,64 @@
         padding-left: 0px;
         overflow: hidden;
         text-overflow: ellipsis;
+        
     }
 
     .e-schedule .template-wrap>div:last-child {
         border-right: 0;
+
     }
 
     .e-schedule .e-timeline-view .e-resource-cells,
     .e-schedule .e-timeline-month-view .e-resource-cells {
         padding-left: 0;
+        
     }
 
     .e-schedule .e-timeline-month-view .e-date-header-wrap table col,
     .e-schedule .e-timeline-month-view .e-content-wrap table col {
-        width: 50px;
+        width: 70px;
+        
     }
 
     @media (max-width: 550px) {
         .e-schedule .e-timeline-month-view .e-resource-left-td {
             width: 50px;
+            
         }
         .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text>div,
         .e-schedule .template-wrap>div {
             flex: 0 0 100%;
+            
         }
         .e-schedule .template-wrap>div:first-child {
             border-right: 0;
+            
         }
         .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text>div:first-child {
             border-right: 0;
+            
         }
         .e-schedule .room-type,
         .e-schedule .room-capacity {
             display: none;
+
         }
     }
+    .e-schedule .template-wrap-2 .subject {
+        text-align: left;
+        padding-top: 6px;
+        padding-left: 5px;
+        vertical-align: middle;
+        font-size: 14px;
+        font-weight: bold;
+        
+        
+    }
+
+    .e-schedule .template-wrap-2 {
+        width: 100%;
+        height: 100%;
+    }
+
 </style>
