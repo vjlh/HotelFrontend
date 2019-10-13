@@ -15,7 +15,7 @@ export default {
     Buttonnav
   },
   mounted(){
-    this.$store.dispatch('fixReservations')
+    //this.$store.dispatch('fixReservations')
   }
 };
 </script>

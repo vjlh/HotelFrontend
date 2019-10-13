@@ -16,6 +16,7 @@
             <e-view 
             option='TimelineMonth' 
             interval=3
+            :eventTemplate='timelineEventTemplate' 
             allowVirtualScrolling
             ></e-view>
         </e-views>
@@ -54,6 +55,14 @@
             },
         }
     });
+    var timelineEventTemplateVue = Vue.component('timelineTemplate', {
+        template: `<div class='template-wrap' style='{background: data.color}'>{{data.Subject}}</div>`,
+        data() {
+            return {
+                data: {}
+            };
+        }
+    });
      
     var resourceHeaderTemplateVue = Vue.component('headerTemplate', {
         template: 
@@ -82,6 +91,11 @@
                 resourceHeaderTemplate: function(e){
                      return {
                         template: resourceHeaderTemplateVue
+                    };
+                },
+                timelineEventTemplate: function (e) {
+                    return {
+                        template: timelineEventTemplateVue
                     };
                 },
                 eventSettings: {
