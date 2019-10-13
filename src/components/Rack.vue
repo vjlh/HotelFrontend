@@ -28,8 +28,7 @@
             name='MeetingRoom' 
             :dataSource='ownerDataSource' 
             textField='id' 
-            idField='id' 
-            :colorField="'#FF5733'">
+            idField='id'>
             </e-resource>
         </e-resources>
     </ejs-schedule>
@@ -56,7 +55,10 @@
         }
     });
     var timelineEventTemplateVue = Vue.component('timelineTemplate', {
-        template: `<div class='template-wrap' style='{background: data.color}'>{{data.Subject}}</div>`,
+        template: `
+            <v-row class="template-wrap-2" v-bind:style="{background: data.Color}">
+                {{data.Subject}}
+            </v-row>`,
         data() {
             return {
                 data: {}
@@ -151,7 +153,7 @@
   @import "../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css";
   .e-schedule .e-timeline-month-view .e-resource-left-td {
         vertical-align: bottom;
-        width: 300px;
+        width: 250px;
         
     }
 
@@ -171,7 +173,6 @@
         height: 36px;
         line-height: 40px;
         padding-left: 5px;
-        /*background: #c7add8;*/
     }
 
     .e-schedule .e-timeline-month-view .e-resource-left-td .e-resource-text>div:last-child {
@@ -181,7 +182,7 @@
 
     .e-schedule .template-wrap {
         display: flex;
-        height: 100%;
+        height: 100%¡;
         text-align: left;
         
     }
@@ -197,11 +198,6 @@
         
     }
 
-    .e-schedule .template-wrap>div:last-child {
-        border-right: 0;
-
-    }
-
     .e-schedule .e-timeline-view .e-resource-cells,
     .e-schedule .e-timeline-month-view .e-resource-cells {
         padding-left: 0;
@@ -210,7 +206,7 @@
 
     .e-schedule .e-timeline-month-view .e-date-header-wrap table col,
     .e-schedule .e-timeline-month-view .e-content-wrap table col {
-        width: 70px;
+        width: 40px;
         
     }
 
@@ -238,20 +234,13 @@
 
         }
     }
-    .e-schedule .template-wrap-2 .subject {
-        text-align: left;
+    .e-schedule .template-wrap-2{
+        padding-left:20px;
         padding-top: 6px;
-        padding-left: 5px;
         vertical-align: middle;
         font-size: 14px;
-        font-weight: bold;
+        font-weight: bold;        
         
-        
-    }
-
-    .e-schedule .template-wrap-2 {
-        width: 100%;
-        height: 100%;
     }
 
 </style>

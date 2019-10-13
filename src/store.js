@@ -37,11 +37,11 @@ export default new Vuex.Store({
           var roomId = state.preReservations[index].room.id
           var id = state.preReservations[index].id
           var color = ""
-          if(state.preReservations[index])
-            color = "#551a8b"
+          if(state.preReservations[index].checkIn)
+            color = '#551a8b'
           else
-            color = "#008B00"  
-          var reserva = {EventName: reservationHolder, StartTime:startTime,  EndTime:endTime, RoomId:roomId, id:id, IsAllDay:true, Subject:reservationHolder, color: color}
+            color = '#008B00'  
+          var reserva = {EventName: reservationHolder, StartTime:startTime,  EndTime:endTime, RoomId:roomId, id:id, IsAllDay:true, Subject:reservationHolder, Color: color}
           console.log(reserva)
   
           state.reservations.push(reserva)

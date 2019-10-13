@@ -39,7 +39,8 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field 
-                label="Nombre" 
+                label="Nombre"
+                v-model="name"
                 required
                 prepend-icon="mdi-account-outline"
                 :rules="nameRules">
@@ -47,14 +48,17 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
-                  label="Apellido"
-                  :rules="apellidoRules"
+                  label="Rut"
+                  v-model="rut"
+                  :rules="rutRules"
+                  prepend-icon="mdi-account-card-details-outline"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field 
                   label="Correo" 
+                  v-model="email"
                   required
                   prepend-icon="mdi-at"
                   :rules="emailRules"
@@ -179,10 +183,15 @@
 </template>
 <script>
   import {mapState, mapMutations} from 'vuex';
+  import axios from 'axios'
 import { log } from 'util';
   export default {
     data () {
       return {
+        name:"",
+        rut:"",
+        email:"",
+        holder:{},
         type:[],
         filteredRooms:[],
         rooms:[
@@ -205,8 +214,8 @@ import { log } from 'util';
         v => !!v || 'El correo es requerido',
         v => /.+@.+\..+/.test(v) || 'El correo debe ser válido',
         ],
-        apellidoRules: [
-        v => !!v || 'El apellido es requerido',
+        rutRules: [
+        v => !!v || 'El rut es requerido',
         v => (v && v.length <= 20) || 'No puede ingresar más de 15 carácteres',
       ],
       }
@@ -237,6 +246,27 @@ import { log } from 'util';
           this.snackbar = true
         }
       },
+      async createReservation() {
+        console.log(this.name)
+        console.log(this.rut)
+        console.log(this.email)
+        /*var id = 0
+
+        axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
+        {
+          name: this.name,
+          rut: this.rut,
+          email: this.email,
+        }
+        ).then(response => {
+        (console.log(response.data.id))
+        }).catch(e => {
+          console.log(e);
+        });
+        console.log(this.holder)
+        */
+        //this.reset()
+        }
     },
     watch: {
       date: function(){
