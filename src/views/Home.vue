@@ -14,5 +14,8 @@ export default {
     Rack,
     Buttonnav
   },
+  mounted(){
+    this.$store.dispatch('fixReservations')
+  }
 };
 </script>

@@ -28,7 +28,7 @@
             :dataSource='ownerDataSource' 
             textField='id' 
             idField='id' 
-            colorField='color'>
+            :colorField="'#FF5733'">
             </e-resource>
         </e-resources>
     </ejs-schedule>
@@ -100,7 +100,7 @@
             }
         },
         methods: {
-             ...mapMutations(['AgregarReserva']),
+            ...mapMutations(['AgregarReserva','fixReservations']),
             onRenderCell: function(args){
                 if (args.elementType === 'emptyCells' && args.element.classList.contains('e-resource-left-td')) {
                     let target = args.element.querySelector('.e-resource-text');
@@ -108,17 +108,17 @@
                     }
             },
             datasource(){
-                var algo = this.dataSource
-                this.eventSettings.dataSource = algo
+                var reservations = this.reservations
+                this.eventSettings.dataSource = reservations
             },
             //scheduleObj.refreshEvents();
         },
 
         computed:{
-            ...mapState(['ownerDataSource','dataSource']),
+            ...mapState(['ownerDataSource','dataSource','reservations']),
         },
         provide: {
-            schedule: [TimelineViews, TimelineMonth, Resize, DragAndDrop]
+            schedule: [TimelineViews, TimelineMonth, DragAndDrop]
         },
         beforeMount() {
             this.datasource()

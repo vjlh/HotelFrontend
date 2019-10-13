@@ -11,8 +11,7 @@
   
         <v-toolbar-items>
           <v-btn text to="/"><v-icon left>mdi-calendar-month</v-icon>Rack</v-btn>
-          <v-btn text to="/about"><v-icon left>mdi-hotel</v-icon>Habitaciones</v-btn>
-          <v-btn text>Link 3</v-btn>
+          <v-btn disabled text to="/about"><v-icon left>mdi-hotel</v-icon>Habitaciones</v-btn>
         </v-toolbar-items>
 
       </v-toolbar>

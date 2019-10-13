@@ -1,7 +1,11 @@
 <template>
-  <v-app  style="background: #0000">
-    <Sidebar/>                
-  </v-app>
+  <v-img
+    :src="require('./assets/images/hotel.jpeg')"
+  >
+    <v-app  style="background: #0000">
+      <Sidebar/>                
+    </v-app>
+  </v-img>
 </template>
 
 <script>
@@ -16,6 +20,7 @@ export default {
   }),
   beforeCreate(){
     this.$store.dispatch('getRooms')
+    this.$store.dispatch('getReservations')
   }
 };
 </script>
