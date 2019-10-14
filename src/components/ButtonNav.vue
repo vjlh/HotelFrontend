@@ -3,7 +3,7 @@
     <v-bottom-navigation
       color="primary"
     >
-      <v-btn v-on:click="dialog=true">
+      <v-btn id="nuevaReserva" v-on:click="dialog=true">
         <span style="color:#000">Nueva Reserva</span>
         <v-icon color="primary">mdi-calendar-plus</v-icon>
       </v-btn>
@@ -40,6 +40,7 @@
               <v-col cols="12" sm="6" md="6">
                 <!--Campo para el nombre-->
                 <v-text-field 
+                id = "nuevaReservaNombre"
                 label="Nombre"
                 v-model="name"
                 required
@@ -50,6 +51,7 @@
               <v-col cols="12" sm="6" md="6">
               <!--Campo para el rut-->
                 <v-text-field
+                  id = "nuevaReservaRut"
                   label="Rut"
                   v-model="rut"
                   :rules="rutRules"
@@ -60,6 +62,7 @@
               <v-col cols="12">
               <!--Campo para el correo-->
                 <v-text-field 
+                  id = "nuevaReservaCorreo"
                   label="Correo" 
                   v-model="email"
                   required
@@ -83,6 +86,7 @@
               
               <v-col cols="12" sm="5">
                 <v-autocomplete
+                id = "nuevaReservaTipo"
                   v-model="type"
                   :items="rooms"
                   item-text="type"
@@ -92,6 +96,7 @@
                 >
               </v-autocomplete>
                 <v-autocomplete
+                id = "nuevaReservaHabitaciones"
                   v-model="habitaciones"
                   :items="ownerDataSource"
                   item-text="id"
@@ -118,6 +123,7 @@
                 </template>
               </v-autocomplete>
                 <VBtn 
+                id = "nuevaReservaAgregar"
                 @click="agregarFecha" 
                 color="#0091EA"
                 dark
@@ -170,6 +176,7 @@
         <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn
+            id = "nuevaReservaGuardar"
             :disabled="!valid"
             color="success"
             class="mr-4"
