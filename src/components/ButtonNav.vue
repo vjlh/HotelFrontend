@@ -131,7 +131,7 @@
                 
                 <v-card
                 style="margin-top:10px"
-                v-for="item in reservas" 
+                v-for="item in reservasFront" 
                 v-bind:key="item.habitacion"
                 light
                 >
@@ -184,7 +184,7 @@
           >
           Guardar
           </v-btn>
-          <v-btn color="error"  @click="ValidaRut(rut)">Cancelar</v-btn>
+          <v-btn color="error" @click="closeDialog">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -214,7 +214,8 @@ import { log } from 'util';
         dialog: false,
         valid: true,
         date: [],
-        reservas:[],
+        reservasFront:[],
+        reservasBack:[],
         habitaciones: [],
         nameRules: [
         v => !!v || 'El nombre es requerido',
@@ -237,12 +238,26 @@ import { log } from 'util';
     },
     methods: {
       agregarFecha(){
-        var fechai = this.date[0].toString().substring(0, 10)
-        var fechaf = this.date[1].toString().substring(0, 10)
-        console.log(fechai)
-        console.log(fechaf)
+        var fechaiB = this.formatDate(this.date[0])
+        var fechafB = this.formatDate(this.date[1])
+
+        var fechaiF = this.date[0].toString().substring(0,10)
+        var fechafF = this.date[1].toString().substring(0,10)
         
-       /* axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
+        for (let i = 0; i < this.habitaciones.length; i++) {
+          var datosFront = {Fechai: fechaiF, Fechaf: fechafF, Habitacion:this.habitaciones[i]}
+          var datosBack = this.habitaciones[i] +'_'+fechaiB +'_' + fechafB
+          this.reservasBack.push(datosBack)
+          this.reservasFront.push(datosFront)
+        }        
+        this.date = []
+        this.habitaciones = []
+
+        console.log("FORMATO BACK")
+        console.log(this.reservasBack)
+        console.log("FORMATO FRONT")
+        console.log(this.reservasFront)
+        /* axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
         { params:{
             arrivalDate: fechai,
             departureDate: fechaf,
@@ -253,14 +268,6 @@ import { log } from 'util';
         }).catch(e => {
           console.log(e);
         });*/
-        
-        for (let i = 0; i < this.habitaciones.length; i++) {
-          var datos = {Fechai: fechai, Fechaf: fechaf, Habitacion:this.habitaciones[i]}
-          this.reservas.push(datos)
-        }        
-        this.date = []
-        this.habitaciones = []
-        console.log(this.reservas)
       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
@@ -291,6 +298,20 @@ import { log } from 'util';
         console.log(this.holder)
         */
         //this.reset()
+      },
+      formatDate(date){
+        var value = new Date(date)
+
+        return value.getMonth()+1 + "/" + value.getDate() + "/" + "20"+ (value.getYear()-100)
+      },
+      closeDialog(){
+        this.name = ""
+        this.rut = ""
+        this.email = ""
+        this.habitaciones = []
+        this.date = []
+        this.type = ""
+        this.dialog = false
       },
       ValidaRut(cRut) {
 
@@ -328,15 +349,18 @@ import { log } from 'util';
     }
     },
     watch: {
-      date: function(){
+      /*date: function(){
         if(this.date.length)
         var fechai = this.date[0]
         var fechaf = this.date[0]
   
         log(fechai)
         log(fechaf)
-      }
-      
+      },*/
+      /*rut: function(){
+
+      }*/
     },
+
   }
 </script>
