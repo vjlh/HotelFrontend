@@ -206,6 +206,7 @@
     },
     data () {
       return {
+        id: "",
         name:"",
         rut:"",
         email:"",
@@ -262,22 +263,19 @@
         }        
         this.date = []
         this.habitaciones = []
-
-        console.log("FORMATO BACK")
-        console.log(this.reservasBack)
-        console.log("FORMATO FRONT")
-        console.log(this.reservasFront)
-        /* axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
+        /*
+        axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
         { params:{
-            arrivalDate: fechai,
-            departureDate: fechaf,
+            arrivalDate: fechaiB,
+            departureDate: fechafB,
           }
         }
         ).then(response => {(console.log(response.data))
         //
         }).catch(e => {
           console.log(e);
-        });*/
+        });*/mask
+
       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
@@ -292,12 +290,8 @@
         }
       },
       async createReservation() {
-        console.log(this.name)
-        console.log(this.rut)
-        console.log(this.email)
-
+        console.log(this.reservasBack)
         this.validate()
-        var id = ""
         var respuesta = ""
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
@@ -306,26 +300,19 @@
           email: this.email,
         }
         ).then(response => {
-        (id = id+response.data.id)
-        }).catch(e => {
-          console.log(e);
-        });
+        (this.id = response.data.id.toString())
+        }).catch(e => { console.log(e)});
         
-        console.log(id)
-
-        await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/', 
+        console.log(this.id)
+        axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/reservationHolderId='+this.id+'&rooms='+this.reservasBack, 
         {
-          params:{
-            reservationHolderId: id,
-            rooms: this.reservas,
-          }
+            price: 0,
+            nights:0,
         }
         ).then(response => {
         (respuesta = response.data)
-        }).catch(e => {
-          console.log(e);
-        });
-        console.log(respuesta)
+        }).catch(e => {console.log(e)});
+        //console.log(respuesta)
 
         //this.reset()
       },
@@ -336,9 +323,9 @@
       },
       closeDialog(){
         this.reset()
-        /*this.habitaciones = []
+        this.habitaciones = []
         this.date = []
-        this.type = ""*/
+        this.type = ""
         this.dialog = false
       },
       ValidaRut(cRut) {
@@ -372,7 +359,6 @@
             }
             ok = cVal == cDig;
         }
-        console.log(ok)
         return ok;
     }
 
@@ -385,14 +371,12 @@
           this.mask = '#.###.###-#'
 
       },
-      date: function(){
+      /*date: function(){
         if(this.date.length)
         var fechai = this.date[0]
         var fechaf = this.date[0]
   
-        log(fechai)
-        log(fechaf)
-      },
+      },*/
     
     },
 

@@ -22,14 +22,13 @@ export default new Vuex.Store({
         .get('http://157.245.12.218:8181/MingesoBackend/rooms')
         .then(response => (state.ownerDataSource = response.data))
         
-        console.log(state.ownerDataSource)
     },
     async getReservations(state){
       state.reservations = []
       await Axios
         .get('http://157.245.12.218:8181/MingesoBackend/reservationrooms')
         .then(response => (state.preReservations = response.data))
-        console.log(state.preReservations)
+
         for (let index = 0; index < state.preReservations.length; index++) {
           var reservationHolder = state.preReservations[index].reservation.reservationHolder.name
           var startTime = new Date(state.preReservations[index].arrivalDate)
