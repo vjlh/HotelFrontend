@@ -3,7 +3,7 @@
     <v-bottom-navigation
       light
     >
-      <v-btn v-on:click="dialog=true">
+      <v-btn id="nuevaReserva" v-on:click="dialog=true">
         <span>Nueva Reserva</span>
         <v-icon>mdi-calendar-plus</v-icon>
       </v-btn>
@@ -39,6 +39,7 @@
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field 
+                id = "nuevaReservaNombre"
                 label="Nombre"
                 v-model="name"
                 required
@@ -48,6 +49,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
+                  id = "nuevaReservaRut"
                   label="Rut"
                   v-model="rut"
                   :rules="rutRules"
@@ -57,6 +59,7 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field 
+                  id = "nuevaReservaCorreo"
                   label="Correo" 
                   v-model="email"
                   required
@@ -80,6 +83,7 @@
               
               <v-col cols="12" sm="5">
                 <v-autocomplete
+                id = "nuevaReservaTipo"
                   v-model="type"
                   :items="rooms"
                   item-text="type"
@@ -89,6 +93,7 @@
                 >
               </v-autocomplete>
                 <v-autocomplete
+                id = "nuevaReservaHabitaciones"
                   v-model="habitaciones"
                   :items="ownerDataSource"
                   item-text="id"
@@ -115,6 +120,7 @@
                 </template>
               </v-autocomplete>
                 <VBtn 
+                id = "nuevaReservaAgregar"
                 @click="agregarFecha" 
                 color="#0091EA"
                 dark
@@ -167,6 +173,7 @@
         <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn
+            id = "nuevaReservaGuardar"
             :disabled="!valid"
             color="success"
             class="mr-4"
