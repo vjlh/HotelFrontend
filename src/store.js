@@ -32,8 +32,8 @@ export default new Vuex.Store({
         console.log(state.preReservations)
         for (let index = 0; index < state.preReservations.length; index++) {
           var reservationHolder = state.preReservations[index].reservation.reservationHolder.name
-          var startTime = state.preReservations[index].arrivalDate
-          var endTime = state.preReservations[index].departureDate
+          var startTime = new Date(state.preReservations[index].arrivalDate)
+          var endTime = new Date(state.preReservations[index].departureDate)
           var roomId = state.preReservations[index].room.id
           var id = state.preReservations[index].id
           var color = ""

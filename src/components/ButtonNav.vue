@@ -1,11 +1,11 @@
 <template>
 <v-container>
     <v-bottom-navigation
-      light
+      color="primary"
     >
       <v-btn v-on:click="dialog=true">
-        <span>Nueva Reserva</span>
-        <v-icon>mdi-calendar-plus</v-icon>
+        <span style="color:#000">Nueva Reserva</span>
+        <v-icon color="primary">mdi-calendar-plus</v-icon>
       </v-btn>
 
       <v-btn disabled>
@@ -38,6 +38,7 @@
             <label>Datos del reservante</label>
             <v-row>
               <v-col cols="12" sm="6" md="6">
+                <!--Campo para el nombre-->
                 <v-text-field 
                 label="Nombre"
                 v-model="name"
@@ -47,6 +48,7 @@
                 </v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
+              <!--Campo para el rut-->
                 <v-text-field
                   label="Rut"
                   v-model="rut"
@@ -56,6 +58,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
+              <!--Campo para el correo-->
                 <v-text-field 
                   label="Correo" 
                   v-model="email"
@@ -174,7 +177,7 @@
           >
           Guardar
           </v-btn>
-          <v-btn color="error"  @click="dialog = false">Cancelar</v-btn>
+          <v-btn color="error"  @click="ValidaRut(rut)">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -227,15 +230,30 @@ import { log } from 'util';
     },
     methods: {
       agregarFecha(){
-        var fechai = this.date[0]
-        var fechaf = this.date[1]
+        var fechai = this.date[0].toString().substring(0, 10)
+        var fechaf = this.date[1].toString().substring(0, 10)
+        console.log(fechai)
+        console.log(fechaf)
+        
+        axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
+        { params:{
+            arrivalDate: fechai,
+            departureDate: fechaf,
+          }
+        }
+        ).then(response => {(console.log(response.data))
+        //
+        }).catch(e => {
+          console.log(e);
+        });
+        /*
         for (let i = 0; i < this.habitaciones.length; i++) {
           var datos = {Fechai: fechai, Fechaf: fechaf, Habitacion:this.habitaciones[i]}
           this.reservas.push(datos)
         }        
         this.date = []
         this.habitaciones = []
-        console.log(this.reservas)
+        console.log(this.reservas)*/
       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
@@ -266,7 +284,41 @@ import { log } from 'util';
         console.log(this.holder)
         */
         //this.reset()
+      },
+      ValidaRut(cRut) {
+
+        cRut = cRut.replace(/[\.-]/g, "");
+        cRut = cRut.toUpperCase();
+        var patt = /^\d{1,8}[0-9K]$/;
+        var ok = patt.test(cRut);
+        var cStr = cRut.slice(0, -1);
+        var cDig = cRut.slice(-1);
+        var nSum = 0;
+        var nVal = 0;
+        var cVal = "";
+        var nMul = 0;
+
+        if (ok) {
+            for (nMul = 2; cStr != ""; nMul = (nMul == 7) ? 2 : nMul + 1) {
+                nSum += Number(cStr.slice(-1)) * nMul;
+                cStr = cStr.slice(0, -1);
+            }
+            nVal = 11 - (nSum % 11);
+            switch (nVal) {
+                case 11:
+                    cVal = "0";
+                    break;
+                case 10:
+                    cVal = "K";
+                    break;
+                default:
+                    cVal = nVal.toString();
+            }
+            ok = cVal == cDig;
         }
+        console.log(ok)
+        return ok;
+    }
     },
     watch: {
       date: function(){
