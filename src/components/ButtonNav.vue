@@ -242,7 +242,7 @@ import { log } from 'util';
         console.log(fechai)
         console.log(fechaf)
         
-        axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
+       /* axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
         { params:{
             arrivalDate: fechai,
             departureDate: fechaf,
@@ -252,15 +252,15 @@ import { log } from 'util';
         //
         }).catch(e => {
           console.log(e);
-        });
-        /*
+        });*/
+        
         for (let i = 0; i < this.habitaciones.length; i++) {
           var datos = {Fechai: fechai, Fechaf: fechaf, Habitacion:this.habitaciones[i]}
           this.reservas.push(datos)
         }        
         this.date = []
         this.habitaciones = []
-        console.log(this.reservas)*/
+        console.log(this.reservas)
       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
