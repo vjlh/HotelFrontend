@@ -53,8 +53,12 @@
                 <v-text-field
                   id = "nuevaReservaRut"
                   label="Rut"
+                  v-mask="mask"
+
                   v-model="rut"
                   :rules="rutRules"
+                  counter = "12"
+                  maxlength="12"
                   prepend-icon="mdi-account-card-details-outline"
                   required
                 ></v-text-field>
@@ -180,7 +184,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="validate"
+            @click="createReservation"
           >
           Guardar
           </v-btn>
@@ -194,14 +198,19 @@
 <script>
   import {mapState, mapMutations} from 'vuex';
   import axios from 'axios'
-import { log } from 'util';
+  import { log } from 'util';
+  import { mask } from 'vue-the-mask';
   export default {
+    directives: {
+      mask,
+    },
     data () {
       return {
         name:"",
         rut:"",
         email:"",
         holder:{},
+        mask :"#.###.###-#",
         type:[],
         filteredRooms:[],
         rooms:[
@@ -215,7 +224,7 @@ import { log } from 'util';
         valid: true,
         date: [],
         reservasFront:[],
-        reservasBack:[],
+        reservasBack:"",
         habitaciones: [],
         nameRules: [
         v => !!v || 'El nombre es requerido',
@@ -227,7 +236,7 @@ import { log } from 'util';
         ],
         rutRules: [
         v => !!v || 'El rut es requerido',
-        v => (v && v.length <= 20) || 'No puede ingresar más de 15 carácteres',
+        v => (v && this.ValidaRut(v) ) || 'Debe ingresar un rut válido',
       ],
       }
     },
@@ -237,6 +246,7 @@ import { log } from 'util';
       
     },
     methods: {
+        
       agregarFecha(){
         var fechaiB = this.formatDate(this.date[0])
         var fechafB = this.formatDate(this.date[1])
@@ -246,8 +256,8 @@ import { log } from 'util';
         
         for (let i = 0; i < this.habitaciones.length; i++) {
           var datosFront = {Fechai: fechaiF, Fechaf: fechafF, Habitacion:this.habitaciones[i]}
-          var datosBack = this.habitaciones[i] +'_'+fechaiB +'_' + fechafB
-          this.reservasBack.push(datosBack)
+          this.reservasBack = this.reservasBack+this.habitaciones[i] +'_'+fechaiB +'_' + fechafB+','
+          //this.reservasBack.push(datosBack)
           this.reservasFront.push(datosFront)
         }        
         this.date = []
@@ -273,6 +283,9 @@ import { log } from 'util';
         const index = this.habitaciones.indexOf(item.id)
         if (index >= 0) this.habitaciones.splice(index, 1)
       },
+      reset () {
+        this.$refs.form.reset()
+      },
       validate () {
         if (this.$refs.form.validate()) {
           this.snackbar = true
@@ -282,21 +295,38 @@ import { log } from 'util';
         console.log(this.name)
         console.log(this.rut)
         console.log(this.email)
-        /*var id = 0
 
-        axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
+        this.validate()
+        var id = ""
+        var respuesta = ""
+        await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
           name: this.name,
           rut: this.rut,
           email: this.email,
         }
         ).then(response => {
-        (console.log(response.data.id))
+        (id = id+response.data.id)
         }).catch(e => {
           console.log(e);
         });
-        console.log(this.holder)
-        */
+        
+        console.log(id)
+
+        await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/', 
+        {
+          params:{
+            reservationHolderId: id,
+            rooms: this.reservas,
+          }
+        }
+        ).then(response => {
+        (respuesta = response.data)
+        }).catch(e => {
+          console.log(e);
+        });
+        console.log(respuesta)
+
         //this.reset()
       },
       formatDate(date){
@@ -305,12 +335,10 @@ import { log } from 'util';
         return value.getMonth()+1 + "/" + value.getDate() + "/" + "20"+ (value.getYear()-100)
       },
       closeDialog(){
-        this.name = ""
-        this.rut = ""
-        this.email = ""
-        this.habitaciones = []
+        this.reset()
+        /*this.habitaciones = []
         this.date = []
-        this.type = ""
+        this.type = ""*/
         this.dialog = false
       },
       ValidaRut(cRut) {
@@ -347,19 +375,25 @@ import { log } from 'util';
         console.log(ok)
         return ok;
     }
+
     },
     watch: {
-      /*date: function(){
+      rut: function(){
+        if(this.rut.length == 12)
+          this.mask = '##.###.###-#'
+        else
+          this.mask = '#.###.###-#'
+
+      },
+      date: function(){
         if(this.date.length)
         var fechai = this.date[0]
         var fechaf = this.date[0]
   
         log(fechai)
         log(fechaf)
-      },*/
-      /*rut: function(){
-
-      }*/
+      },
+    
     },
 
   }
