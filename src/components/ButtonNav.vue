@@ -148,6 +148,8 @@
                   required
                   :loading="loading"
                   prepend-inner-icon="mdi-hotel"
+                  no-data-text="La información se está cargando"
+
 
                 >
                   <template v-slot:selection="data">
@@ -167,14 +169,12 @@
                   </template>
                 </v-autocomplete >
                 <VBtn 
+                class="white--text"
+                :disabled="addStatus"
                 id = "nuevaReservaAgregar"
                 @click="agregarFecha" 
                 color="#0091EA"
-                dark
-                :disabled="!addStatus"
-                no-data-text="La información se está cargando"
                 ><v-icon>mdi-plus</v-icon>Añadir a la reserva</VBtn>
-                
                 <v-card
                 style="margin-top:10px"
                 v-for="item in reservasFront" 
@@ -262,7 +262,7 @@
         rut:"",
         email:"",
         roomStatus: false,
-        addStatus: false,
+        addStatus: true,
         holder:{},
         mask :"##.###.###-#",
         type:[],
@@ -481,9 +481,9 @@
       },
       habitaciones: function(){
         if(this.habitaciones.length >0)
-          this.addStatus = true
+          this.addStatus = false
         else
-            this.addStatus = false
+            this.addStatus = true
       },
       reservasFront: function(){
         if (typeof(this.reservasFront) != "undefined") {
