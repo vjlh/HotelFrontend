@@ -15,6 +15,22 @@
         <v-icon>mdi-close-circle-outline</v-icon>
       </v-btn>
     </v-snackbar>
+    <v-snackbar
+      v-model="showError"
+      color="error"
+      :timeout="timeout"
+      top
+    >
+      La reserva no se ha podido guardar, intente más tarde
+      <v-btn
+        dark
+        text
+        @click="showError = false"
+      >
+        <v-icon>mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-snackbar>
+
     <v-bottom-navigation
       color="primary"
     >
@@ -238,6 +254,7 @@
         i:0,
         timeout: 3000,
         show:false,
+        showError:false,
         availableRooms:[],
         valid: true,
         fullField: true,
@@ -273,8 +290,7 @@
         ],
         rutRules: [
         v => !!v || 'El rut es requerido',
-        v => ( v.length > 10 && v.length <= 12) || 'El rut ingresado no es válido',
-        v => this.ValidaRut(v) || 'El rut ingresado no es válido'
+        v => ( this.ValidaRut(v) && v.length > 10 && v.length <= 12) || 'El rut ingresado no es válido',
       ],
       }
     },
@@ -333,8 +349,7 @@
           var idRoom = this.reservasFront[i].Habitacion
           this.reservasBack = this.reservasBack+ idRoom +'_'+datei +'_' + datef+','
         } 
-               
-        var respuesta = ""
+           
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
           name: this.name,
@@ -342,16 +357,17 @@
           email: this.email,
         }
         ).then(response => {
-        (this.id = response.data.id.toString())
-        }).catch(e => { console.log(e)});
+        (this.id = response.data.id)
+        }).catch(e => { console.log(e); this.showError = true});
         
-        await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/?reservationHolderId='+this.id+'&rooms='+this.reservasBack.substring(0,this.reservasBack.length-1), 
+        if(this.id != 0)
         {
+          await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/?reservationHolderId='+this.id+'&rooms='+this.reservasBack.substring(0,this.reservasBack.length-1), 
+          {
             price: 0,
+          }).then(response => {}).catch(e => {console.log(e); this.showError = true})
         }
-        ).then(response => {
-        (respuesta = response.data)
-        }).catch(e => {console.log(e)});
+        
         this.getReservations()
         this.closeDialog()
         this.show = true
@@ -397,17 +413,19 @@
         this.dialog = false
       },
       haveNumber(name){
-        var numeros="0123456789?¿@#!¡&${}[]()"
-        var texto = name.toString()
-        for(var i=0; i<texto.length; i++){
-            if (numeros.indexOf(texto.charAt(i),0)!=-1){
-              return false;
-            }
+        if (typeof(name) != "undefined") {
+          var numeros="0123456789?¿@#!¡&${}[]()%?*/.,"
+          var texto = name.toString()
+          for(var i=0; i<texto.length; i++){
+              if (numeros.indexOf(texto.charAt(i),0)!=-1){
+                return false;
+              }
+          }
+          return true;
         }
-        return true;
       },
       ValidaRut(cRut) {
-
+        if (typeof(cRut) != "undefined") {
         cRut = cRut.replace(/[\.-]/g, "");
         cRut = cRut.toUpperCase();
         var patt = /^\d{1,8}[0-9K]$/;
@@ -438,15 +456,18 @@
             ok = cVal == cDig;
         }
         return ok;
+      }
     }
 
     },
     watch: {
       rut: function(){
+        if (typeof(this.rut) != "undefined") {
         if(this.rut.length == 12)
           this.mask = '##.###.###-#'
         else
           this.mask = '#.###.###-#'
+        }
 
       },
       date: function(){
@@ -465,12 +486,13 @@
             this.addStatus = false
       },
       reservasFront: function(){
+        if (typeof(this.reservasFront) != "undefined") {
         this.validate() 
+        }
       },
       valid: function(){
         if(this.valid)
           this.validate()
-        console.log(this.valid)
       }
     },
   }
