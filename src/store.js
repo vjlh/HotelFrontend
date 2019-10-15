@@ -27,7 +27,7 @@ export default new Vuex.Store({
       state.reservations = []
       await Axios
         .get('http://157.245.12.218:8181/MingesoBackend/reservationrooms')
-        .then(response => (state.preReservations = response.data))
+        .then(response => (state.preReservations = response.data));
 
         for (let index = 0; index < state.preReservations.length; index++) {
           var reservationHolder = state.preReservations[index].reservation.reservationHolder.name
@@ -35,15 +35,15 @@ export default new Vuex.Store({
           var endTime = new Date(state.preReservations[index].departureDate)
           var roomId = state.preReservations[index].room.id
           var id = state.preReservations[index].id
+          endTime.setDate(endTime.getDate()+1)
+
           var color = ""
           if(state.preReservations[index].checkIn)
             color = '#551a8b'
           else
             color = '#008B00'  
           var reserva = {EventName: reservationHolder, StartTime:startTime,  EndTime:endTime, RoomId:roomId, id:id, IsAllDay:true, Subject:reservationHolder, Color: color}
-          
           state.reservations.push(reserva)
-          console.log(state.reservations.length)
           }
     },  
   },

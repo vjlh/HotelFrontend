@@ -254,7 +254,7 @@
       
     },
     methods: {
-        
+      ...mapMutations(['getReservations']),
       agregarFecha(){
         var fechaiB = this.formatDate(this.date[0])
         var fechafB = this.formatDate(this.date[1])
@@ -307,7 +307,6 @@
         (this.id = response.data.id.toString())
         }).catch(e => { console.log(e)});
         
-        console.log(this.id)
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/?reservationHolderId='+this.id+'&rooms='+this.reservasBack.substring(0,this.reservasBack.length-1), 
         {
             price: 0,
@@ -316,14 +315,15 @@
         (respuesta = response.data)
         }).catch(e => {console.log(e)});
         //this.$store.dispatch('getReservations')
-        this.$router.go()
+        //this.$router.go()
+        this.getReservations()
         this.closeDialog()
 
       },
       formatDate(date){
         var value = new Date(date)
 
-        return value.getMonth()+1 + "/" + value.getDate() + "/" + "20"+ (value.getYear()-100)
+        return value.getMonth()+1 + "/" + (value.getDate()+1) + "/" + "20"+ (value.getYear()-100)
       },
       closeDialog(){
         this.$refs.form.reset()

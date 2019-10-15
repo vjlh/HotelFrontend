@@ -82,6 +82,7 @@
     export default {
         data() {
             return {
+                len: 0,
                 headerRows: [{ option: 'Month' }, { option: 'Date' }],
                 selectedDate: new Date(Date.now()),
                 group: {
@@ -123,8 +124,10 @@
                     }
             },
             datasource(){
+                this.eventSettings.dataSource = []
                 var reservations = this.reservations
                 this.eventSettings.dataSource = reservations
+                this.len = this.eventSettings.dataSource.length
             },
             //scheduleObj.refreshEvents();
         },
@@ -140,9 +143,11 @@
         },
         watch:{
             reservations: function(){
-                console.log("ocurre")
-                this.eventSettings.dataSource = this.reservations
-                console.log(this.eventSettings.dataSource.length)
+                if (this.reservations.length > this.len)
+                {
+                    let scheduleObj = document.getElementById("Schedule").ej2_instances[0]; 
+                    scheduleObj.eventSettings.dataSource = this.reservations
+                }
             }
         }
     }
