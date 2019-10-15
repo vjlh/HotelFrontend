@@ -88,6 +88,7 @@
                   light
                   required
                   color="#0091EA"
+                  :min="min"
                   ></v-date-picker>
               </v-col>
               
@@ -175,7 +176,7 @@
                     </v-list-item>
 
                   </v-list-item-group>
-                </v-list>              </v-card>
+                </v-list> </v-card>
               </v-col>
               
             </v-row>
@@ -186,7 +187,7 @@
           <div class="flex-grow-1"></div>
           <v-btn
             id = "nuevaReservaGuardar"
-            :disabled="!valid"
+            :disabled="!(fullField ==false && !valid == false)"
             color="success"
             class="mr-4"
             @click="createReservation"
@@ -212,14 +213,17 @@
     data () {
       return {
         id: "",
+        valid: true,
+        fullField: true,
         name:"",
         rut:"",
         email:"",
         roomStatus: false,
         addStatus: false,
         holder:{},
-        mask :"#.###.###-#",
+        mask :"##.###.###-#",
         type:[],
+        min: new Date(Date.now()).toISOString().substring(0,10),
         filteredRooms:[],
         rooms:[
           {id:0, type:"Simple"},
@@ -229,7 +233,6 @@
           {id:4, type:"Matrimonial"}
         ],
         dialog: false,
-        valid: true,
         date: [],
         reservasFront:[],
         reservasBack:"",
@@ -265,7 +268,6 @@
         for (let i = 0; i < this.habitaciones.length; i++) {
           var datosFront = {Fechai: fechaiF, Fechaf: fechafF, Habitacion:this.habitaciones[i]}
           this.reservasBack = this.reservasBack+this.habitaciones[i] +'_'+fechaiB +'_' + fechafB+','
-          //this.reservasBack.push(datosBack)
           this.reservasFront.push(datosFront)
         }        
         this.date = []
@@ -285,17 +287,18 @@
         console.log(this.reservasBack)
 
       },
+      
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
         if (index >= 0) this.habitaciones.splice(index, 1)
       },
       validate () {
-        this.$refs.form.validate() 
+        if (this.$refs.form.validate() && this.reservasBack.length >= 23) {
+          this.fullField = false
+        }
       },
       async createReservation() {
 
-        this.validate()
-        
         var respuesta = ""
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
@@ -327,7 +330,6 @@
       },
       closeDialog(){
         this.$refs.form.reset()
-        this.rut=""
         this.reservasFront = []
         this.reservasBack = ""
         this.habitaciones = []
@@ -393,8 +395,14 @@
           this.addStatus = true
         else
             this.addStatus = false
+      },
+      reservasBack: function(){
+        this.validate() 
       }
     
+    },
+    mounted() {
+      
     },
 
   }
