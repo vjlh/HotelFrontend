@@ -140,6 +140,7 @@
                     :input-value="data.selected"
                     close
                     dark
+                    small
                     @click="data.select"
                     @click:close="remove(data.item)"
                     color="#0091EA"  
