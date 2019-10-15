@@ -1,7 +1,7 @@
 <template>
 <v-container >
-  <Buttonnav style="margin-top:-16px"/>  
-  <Rack style="margin-top:-3px"/>  
+  <Buttonnav style="margin-top:-5px"/>  
+  <Rack />  
   <Footer/>  
 </v-container>
 </template>

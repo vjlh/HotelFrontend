@@ -3,7 +3,7 @@
         id='Schedule' 
         ref='ScheduleObj' 
         width='100%' 
-        height='600px'
+        height= '620px'
         :eventSettings='eventSettings' 
         :selectedDate='selectedDate' 
         :group='group'

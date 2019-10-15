@@ -162,10 +162,11 @@
                 >
                 <v-list dense>
                   <v-list-item-group>
-                    <v-list-item
-                    >
+                    <v-btn text small icon @click="deleteReservation(item)"><v-icon color="error" >mdi-delete-forever</v-icon></v-btn>
+
+                    <v-list-item>
                       <v-list-item-icon>
-                        <v-icon left >mdi-calendar-today</v-icon> Inicio:
+                        <v-icon left color="primary">mdi-calendar-today</v-icon> Inicio:
                       </v-list-item-icon>
                       <v-list-item-content >
                         <v-list-item-title class="text-right" v-text="item.Fechai"></v-list-item-title>
@@ -174,7 +175,7 @@
 
                     <v-list-item>
                       <v-list-item-icon>
-                        <v-icon left>mdi-calendar</v-icon>Fin:
+                        <v-icon left color="primary">mdi-calendar</v-icon>Fin:
                       </v-list-item-icon>
                       <v-list-item-content >
                         <v-list-item-title class="text-right" v-text="item.Fechaf"></v-list-item-title>
@@ -183,7 +184,7 @@
 
                     <v-list-item>
                       <v-list-item-icon>
-                        <v-icon left>mdi-hotel</v-icon>Habitación
+                        <v-icon left color="primary">mdi-hotel</v-icon>Habitación
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-title class="text-right" v-text="item.Habitacion"></v-list-item-title>
@@ -228,6 +229,7 @@
     data () {
       return {
         id: "",
+        i:0,
         timeout: 3000,
         show:false,
         availableRooms:[],
@@ -275,34 +277,54 @@
     methods: {
       ...mapMutations(['getReservations']),
       agregarFecha(){
-        var fechaiB = this.formatDate(this.date[0])
-        var fechafB = this.formatDate(this.date[1])
+        var fechai = this.date[0]
+        var fechaf = this.date[1]
 
-        var fechaiF = this.date[0].toString().substring(0,10)
-        var fechafF = this.date[1].toString().substring(0,10)
-        
         for (let i = 0; i < this.habitaciones.length; i++) {
-          var datosFront = {Fechai: fechaiF, Fechaf: fechafF, Habitacion:this.habitaciones[i]}
-          this.reservasBack = this.reservasBack+this.habitaciones[i] +'_'+fechaiB +'_' + fechafB+','
+          var datosFront = {id: i, Fechai: fechai, Fechaf: fechaf, Habitacion:this.habitaciones[i]}
           this.reservasFront.push(datosFront)
+          this.i+=1
         }        
         this.date = []
         this.habitaciones = []
-        console.log(this.reservasBack)
 
       },
-      
+      deleteReservation(item){
+        const index = this.getIndex(item.id)
+        if (index >= 0) this.reservasFront.splice(index, 1)
+
+      },
+      getIndex(id) {
+        var index = -1;
+        this.reservasFront.filter(function (reservation, i) {
+            if (reservation.id === id) {
+                index = i;
+            }
+        });
+        return index;
+       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
         if (index >= 0) this.habitaciones.splice(index, 1)
       },
-      validate () {
-        if (this.$refs.form.validate() && this.reservasBack.length >= 23) {
+      validate() {
+        if (this.$refs.form.validate() && this.reservasFront.length > 0) {
           this.fullField = false
         }
+        else
+          this.fullField = true
+
       },
       async createReservation() {
+        
+        for (let i = 0; i < this.reservasFront.length; i++) {
+          var datei = this.formatDate(this.reservasFront[i].Fechai)
+          var datef = this.formatDate(this.reservasFront[i].Fechaf)
 
+          var idRoom = this.reservasFront[i].Habitacion
+          this.reservasBack = this.reservasBack+ idRoom +'_'+datei +'_' + datef+','
+        } 
+               
         var respuesta = ""
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
@@ -344,7 +366,6 @@
         this.availableRooms.sort(function (a, b) {
           return (a.id - b.id)
         })
-        console.log(this.availableRooms)
       },
       formatDate(date){
         var value = new Date(date)
@@ -353,7 +374,7 @@
       },
       closeDialog(){
         this.$refs.form.reset()
-        this.fullField = 
+        this.i = 0
         this.reservasFront = []
         this.reservasBack = ""
         this.habitaciones = []
@@ -423,14 +444,9 @@
         else
             this.addStatus = false
       },
-      reservasBack: function(){
+      reservasFront: function(){
         this.validate() 
       }
-    
     },
-    mounted() {
-      
-    },
-
   }
 </script>
