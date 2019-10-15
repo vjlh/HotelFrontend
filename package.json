@@ -23,6 +23,7 @@
     "vue-loader": "^15.7.1",
     "vue-router": "^3.0.3",
     "vue-the-mask": "^0.11.1",
+    "vuelidate": "^0.7.4",
     "vuetify": "^2.0.0",
     "vuex": "^3.0.1"
   },

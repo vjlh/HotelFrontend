@@ -2,7 +2,7 @@
  <div>
       <v-toolbar
         elevation=10
-        height=65
+        height=50
         dark
         tile>
         <v-toolbar-title>HotelG5</v-toolbar-title>

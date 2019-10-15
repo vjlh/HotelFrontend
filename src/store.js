@@ -39,9 +39,9 @@ export default new Vuex.Store({
 
           var color = ""
           if(state.preReservations[index].checkIn)
-            color = '#551a8b'
+            color = '#D81B60'
           else
-            color = '#008B00'  
+            color = '#40C4FF'  
           var reserva = {EventName: reservationHolder, StartTime:startTime,  EndTime:endTime, RoomId:roomId, id:id, IsAllDay:true, Subject:reservationHolder, Color: color}
           state.reservations.push(reserva)
           }

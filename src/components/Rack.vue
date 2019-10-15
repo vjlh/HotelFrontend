@@ -10,7 +10,7 @@
         :renderCell='onRenderCell'
         :resourceHeaderTemplate='resourceHeaderTemplate'
         :headerRows='headerRows'
-        allowResizing=true
+        :popupOpen='onPopupOpen'
         >
         <e-views>
             <e-view 
@@ -129,6 +129,9 @@
                 this.eventSettings.dataSource = reservations
                 this.len = this.eventSettings.dataSource.length
             },
+            onPopupOpen: function(args) {
+                args.cancel = true;
+            }
             //scheduleObj.refreshEvents();
         },
 

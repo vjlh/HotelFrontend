@@ -1,5 +1,20 @@
 <template>
 <v-container>
+  <v-snackbar
+      v-model="show"
+      color="success"
+      :timeout="timeout"
+      top
+    >
+      La reserva se ha guardado exitósamente
+      <v-btn
+        dark
+        text
+        @click="show = false"
+      >
+        <v-icon>mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-snackbar>
     <v-bottom-navigation
       color="primary"
     >
@@ -213,6 +228,8 @@
     data () {
       return {
         id: "",
+        timeout: 3000,
+        show:false,
         availableRooms:[],
         valid: true,
         fullField: true,
@@ -305,10 +322,9 @@
         ).then(response => {
         (respuesta = response.data)
         }).catch(e => {console.log(e)});
-        //this.$store.dispatch('getReservations')
-        //this.$router.go()
         this.getReservations()
         this.closeDialog()
+        this.show = true
 
       },
       async getAvailableRooms(date1,date2){
