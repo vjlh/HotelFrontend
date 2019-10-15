@@ -264,7 +264,8 @@
         habitaciones: [],
         nameRules: [
         v => !!v || 'El nombre es requerido',
-        v => (v && v.length <= 20) || 'No puede ingresar más de 50 carácteres'
+        v => (v && v.length <= 20) || 'No puede ingresar más de 20 carácteres',
+        v => this.haveNumber(v) || 'El nombre solo puede contener letras'
         ],
         emailRules: [
         v => !!v || 'El correo es requerido',
@@ -272,7 +273,8 @@
         ],
         rutRules: [
         v => !!v || 'El rut es requerido',
-        v => (v && this.ValidaRut(v) && v.length > 10 && v.length <= 12) || 'Debe ingresar un rut válido',
+        v => ( v.length > 10 && v.length <= 12) || 'El rut ingresado no es válido',
+        v => this.ValidaRut(v) || 'El rut ingresado no es válido'
       ],
       }
     },
@@ -393,6 +395,16 @@
         this.valid = true
         this.fullField = true
         this.dialog = false
+      },
+      haveNumber(name){
+        var numeros="0123456789?¿@#!¡&${}[]()"
+        var texto = name.toString()
+        for(var i=0; i<texto.length; i++){
+            if (numeros.indexOf(texto.charAt(i),0)!=-1){
+              return false;
+            }
+        }
+        return true;
       },
       ValidaRut(cRut) {
 
