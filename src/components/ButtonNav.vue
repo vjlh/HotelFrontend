@@ -122,14 +122,15 @@
                 id = "nuevaReservaHabitaciones"
                   v-model="habitaciones"
                   :items="availableRooms"
-                  item-text="id"
                   item-value="id"
+                  :item-text="infoRoom"
                   label="Habitación"
                   chips
                   multiple
                   light
                   :disabled="!roomStatus"
                   required
+                  :loading="loading"
                 >
                   <template v-slot:selection="data">
                   <v-chip
@@ -229,6 +230,7 @@
     data () {
       return {
         id: "",
+        loading:false,
         i:0,
         timeout: 3000,
         show:false,
@@ -276,6 +278,7 @@
     },
     methods: {
       ...mapMutations(['getReservations']),
+      infoRoom: item => item.id +' ' + ' '+ '→' +' '+ ' '+item.type,
       agregarFecha(){
         var fechai = this.date[0]
         var fechaf = this.date[1]
@@ -351,7 +354,7 @@
       async getAvailableRooms(date1,date2){
         var datei = this.formatDate(date1)
         var datef = this.formatDate(date2)
-        
+        this.loading = true
         await axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
         { params:{
             arrivalDate: datei,
@@ -366,6 +369,7 @@
         this.availableRooms.sort(function (a, b) {
           return (a.id - b.id)
         })
+        this.loading = false
       },
 
       formatDate(date){
