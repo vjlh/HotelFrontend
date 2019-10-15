@@ -242,7 +242,6 @@
         mask :"##.###.###-#",
         type:[],
         min: new Date(Date.now()).toISOString().substring(0,10),
-        filteredRooms:[],
         rooms:[
           {id:0, type:"Simple"},
           {id:1, type:"Doble"},
@@ -354,14 +353,16 @@
       },
       closeDialog(){
         this.$refs.form.reset()
+        this.fullField = 
         this.reservasFront = []
         this.reservasBack = ""
         this.habitaciones = []
         this.date = []
-        this.rut = ""
         this.habitaciones = []
         this.date = []
         this.type = ""
+        this.valid = true
+        this.fullField = true
         this.dialog = false
       },
       ValidaRut(cRut) {
