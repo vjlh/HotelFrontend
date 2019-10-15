@@ -106,7 +106,7 @@
                 <v-autocomplete 
                 id = "nuevaReservaHabitaciones"
                   v-model="habitaciones"
-                  :items="ownerDataSource"
+                  :items="availableRooms"
                   item-text="id"
                   item-value="id"
                   label="Habitación"
@@ -213,6 +213,7 @@
     data () {
       return {
         id: "",
+        availableRooms:[],
         valid: true,
         fullField: true,
         name:"",
@@ -253,8 +254,7 @@
     },
 
     computed: {
-      ...mapState(['ownerDataSource','dataSource']),
-      
+    //      
     },
     methods: {
       ...mapMutations(['getReservations']),
@@ -272,18 +272,6 @@
         }        
         this.date = []
         this.habitaciones = []
-        /*
-        axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
-        { params:{
-            arrivalDate: fechaiB,
-            departureDate: fechafB,
-          }
-        }
-        ).then(response => {(console.log(response.data))
-        //
-        }).catch(e => {
-          console.log(e);
-        });*/
         console.log(this.reservasBack)
 
       },
@@ -322,6 +310,26 @@
         this.getReservations()
         this.closeDialog()
 
+      },
+      async getAvailableRooms(date1,date2){
+        var datei = this.formatDate(date1)
+        var datef = this.formatDate(date2)
+        
+        await axios.get('http://157.245.12.218:8181/MingesoBackend/reservationrooms/availables', 
+        { params:{
+            arrivalDate: datei,
+            departureDate: datef,
+          }
+        }
+        ).then(response => {(this.availableRooms = response.data)
+        //
+        }).catch(e => {
+          console.log(e);
+        });
+        this.availableRooms.sort(function (a, b) {
+          return (a.id - b.id)
+        })
+        console.log(this.availableRooms)
       },
       formatDate(date){
         var value = new Date(date)
@@ -384,8 +392,10 @@
 
       },
       date: function(){
-        if(this.date.length == 2)
+        if(this.date.length == 2){
           this.roomStatus = true
+          this.getAvailableRooms(this.date[0],this.date[1])
+        }
         else
             this.roomStatus = false
   
