@@ -15,7 +15,6 @@
         <e-views>
             <e-view 
             option='TimelineMonth' 
-            interval=3
             :eventTemplate='timelineEventTemplate' 
             allowVirtualScrolling
             ></e-view>
@@ -131,7 +130,7 @@
         },
 
         computed:{
-            ...mapState(['ownerDataSource','dataSource','reservations']),
+            ...mapState(['ownerDataSource','reservations']),
         },
         provide: {
             schedule: [TimelineViews, TimelineMonth, DragAndDrop]
@@ -139,6 +138,13 @@
         beforeMount() {
             this.datasource()
         },
+        watch:{
+            reservations: function(){
+                console.log("ocurre")
+                this.eventSettings.dataSource = this.reservations
+                console.log(this.eventSettings.dataSource.length)
+            }
+        }
     }
 </script>
 

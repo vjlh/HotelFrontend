@@ -54,7 +54,6 @@
                   id = "nuevaReservaRut"
                   label="Rut"
                   v-mask="mask"
-
                   v-model="rut"
                   :rules="rutRules"
                   counter = "12"
@@ -71,6 +70,9 @@
                   v-model="email"
                   required
                   prepend-icon="mdi-at"
+                  counter = "50"
+                  maxlength="50"
+                  
                   :rules="emailRules"
                   ></v-text-field>
               </v-col>
@@ -84,12 +86,13 @@
                   v-model="date" 
                   range
                   light
+                  required
                   color="#0091EA"
                   ></v-date-picker>
               </v-col>
               
               <v-col cols="12" sm="5">
-                <v-autocomplete
+                <!--<v-autocomplete
                 id = "nuevaReservaTipo"
                   v-model="type"
                   :items="rooms"
@@ -98,8 +101,8 @@
                   label="Tipo"
                   light
                 >
-              </v-autocomplete>
-                <v-autocomplete
+              </v-autocomplete>-->
+                <v-autocomplete 
                 id = "nuevaReservaHabitaciones"
                   v-model="habitaciones"
                   :items="ownerDataSource"
@@ -109,6 +112,8 @@
                   chips
                   multiple
                   light
+                  :disabled="!roomStatus"
+                  required
                 >
                   <template v-slot:selection="data">
                   <v-chip
@@ -118,20 +123,20 @@
                     dark
                     @click="data.select"
                     @click:close="remove(data.item)"
-                    color="#0091EA"
-                    
+                    color="#0091EA"  
                   >
                     <v-icon left>mdi-hotel</v-icon>
                     {{ data.item.id }}
                   </v-chip>
-                </template>
-              </v-autocomplete>
+                  </template>
+                </v-autocomplete >
                 <VBtn 
                 id = "nuevaReservaAgregar"
                 @click="agregarFecha" 
                 color="#0091EA"
                 dark
-                ><v-icon>mdi-plus</v-icon>Agregar Reserva</VBtn>
+                :disabled="!addStatus"
+                ><v-icon>mdi-plus</v-icon>Añadir a la reserva</VBtn>
                 
                 <v-card
                 style="margin-top:10px"
@@ -210,6 +215,8 @@
         name:"",
         rut:"",
         email:"",
+        roomStatus: false,
+        addStatus: false,
         holder:{},
         mask :"#.###.###-#",
         type:[],
@@ -229,7 +236,7 @@
         habitaciones: [],
         nameRules: [
         v => !!v || 'El nombre es requerido',
-        v => (v && v.length <= 20) || 'No puede ingresar más de 15 carácteres'
+        v => (v && v.length <= 20) || 'No puede ingresar más de 50 carácteres'
         ],
         emailRules: [
         v => !!v || 'El correo es requerido',
@@ -237,7 +244,7 @@
         ],
         rutRules: [
         v => !!v || 'El rut es requerido',
-        v => (v && this.ValidaRut(v) ) || 'Debe ingresar un rut válido',
+        v => (v && this.ValidaRut(v) && v.length > 10 && v.length <= 12) || 'Debe ingresar un rut válido',
       ],
       }
     },
@@ -274,24 +281,21 @@
         //
         }).catch(e => {
           console.log(e);
-        });*/mask
+        });*/
+        console.log(this.reservasBack)
 
       },
       remove (item) {
         const index = this.habitaciones.indexOf(item.id)
         if (index >= 0) this.habitaciones.splice(index, 1)
       },
-      reset () {
-        this.$refs.form.reset()
-      },
       validate () {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
+        this.$refs.form.validate() 
       },
       async createReservation() {
-        console.log(this.reservasBack)
+
         this.validate()
+        
         var respuesta = ""
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
@@ -304,17 +308,17 @@
         }).catch(e => { console.log(e)});
         
         console.log(this.id)
-        axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/reservationHolderId='+this.id+'&rooms='+this.reservasBack, 
+        await axios.post('http://157.245.12.218:8181/MingesoBackend/reservations/create/?reservationHolderId='+this.id+'&rooms='+this.reservasBack.substring(0,this.reservasBack.length-1), 
         {
             price: 0,
-            nights:0,
         }
         ).then(response => {
         (respuesta = response.data)
         }).catch(e => {console.log(e)});
-        //console.log(respuesta)
+        //this.$store.dispatch('getReservations')
+        this.$router.go()
+        this.closeDialog()
 
-        //this.reset()
       },
       formatDate(date){
         var value = new Date(date)
@@ -322,7 +326,13 @@
         return value.getMonth()+1 + "/" + value.getDate() + "/" + "20"+ (value.getYear()-100)
       },
       closeDialog(){
-        this.reset()
+        this.$refs.form.reset()
+        this.rut=""
+        this.reservasFront = []
+        this.reservasBack = ""
+        this.habitaciones = []
+        this.date = []
+        this.rut = ""
         this.habitaciones = []
         this.date = []
         this.type = ""
@@ -371,12 +381,19 @@
           this.mask = '#.###.###-#'
 
       },
-      /*date: function(){
-        if(this.date.length)
-        var fechai = this.date[0]
-        var fechaf = this.date[0]
+      date: function(){
+        if(this.date.length == 2)
+          this.roomStatus = true
+        else
+            this.roomStatus = false
   
-      },*/
+      },
+      habitaciones: function(){
+        if(this.habitaciones.length >0)
+          this.addStatus = true
+        else
+            this.addStatus = false
+      }
     
     },
 

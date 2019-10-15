@@ -41,8 +41,9 @@ export default new Vuex.Store({
           else
             color = '#008B00'  
           var reserva = {EventName: reservationHolder, StartTime:startTime,  EndTime:endTime, RoomId:roomId, id:id, IsAllDay:true, Subject:reservationHolder, Color: color}
-  
+          
           state.reservations.push(reserva)
+          console.log(state.reservations.length)
           }
     },  
   },
