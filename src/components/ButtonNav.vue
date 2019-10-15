@@ -125,12 +125,14 @@
                   item-value="id"
                   :item-text="infoRoom"
                   label="Habitación"
-                  chips
+                  close
                   multiple
                   light
                   :disabled="!roomStatus"
                   required
                   :loading="loading"
+                  prepend-inner-icon="mdi-hotel"
+
                 >
                   <template v-slot:selection="data">
                   <v-chip
@@ -153,6 +155,7 @@
                 color="#0091EA"
                 dark
                 :disabled="!addStatus"
+                no-data-text="La información se está cargando"
                 ><v-icon>mdi-plus</v-icon>Añadir a la reserva</VBtn>
                 
                 <v-card
