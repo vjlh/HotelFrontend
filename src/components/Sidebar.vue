@@ -5,7 +5,7 @@
         height=50
         dark
         tile>
-        <v-toolbar-title>HotelG5</v-toolbar-title>
+        <v-toolbar-title><v-btn x-large depressed to="/"><VIcon left>mdi-hospital-building</VIcon> HotelG5</v-btn></v-toolbar-title>
   
         <div class="flex-grow-1"></div>
   

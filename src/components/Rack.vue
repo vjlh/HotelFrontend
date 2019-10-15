@@ -17,6 +17,7 @@
             option='TimelineMonth' 
             :eventTemplate='timelineEventTemplate' 
             allowVirtualScrolling
+            readonly=true
             ></e-view>
         </e-views>
         <e-resources>
