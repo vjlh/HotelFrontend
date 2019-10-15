@@ -367,9 +367,9 @@
           return (a.id - b.id)
         })
       },
+
       formatDate(date){
         var value = new Date(date)
-
         return value.getMonth()+1 + "/" + (value.getDate()+1) + "/" + "20"+ (value.getYear()-100)
       },
       closeDialog(){
@@ -446,6 +446,11 @@
       },
       reservasFront: function(){
         this.validate() 
+      },
+      valid: function(){
+        if(this.valid)
+          this.validate()
+        console.log(this.valid)
       }
     },
   }
