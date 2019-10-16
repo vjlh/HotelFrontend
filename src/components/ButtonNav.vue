@@ -114,6 +114,7 @@
             <v-row>
               <v-col cols="12" sm="7">
                 <v-date-picker 
+                  id = "nuevaReservaCalendario"
                   v-model="date" 
                   range
                   light
