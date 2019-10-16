@@ -151,6 +151,7 @@
                 {
                     let scheduleObj = document.getElementById("Schedule").ej2_instances[0]; 
                     scheduleObj.eventSettings.dataSource = this.reservations
+                    this.len = this.reservations.length
                 }
             }
         }

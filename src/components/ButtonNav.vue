@@ -236,6 +236,26 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+      <v-dialog
+      v-model="reservanding"
+      hide-overlay
+      persistent
+      width="300"
+    >
+      <v-card
+        color="primary"
+        dark
+      >
+        <v-card-text>
+          Se está generando la reserva
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
 </v-container>
 
 </template>
@@ -250,6 +270,7 @@
     },
     data () {
       return {
+        reservanding: false,
         id: "",
         loading:false,
         i:0,
@@ -350,7 +371,7 @@
           var idRoom = this.reservasFront[i].Habitacion
           this.reservasBack = this.reservasBack+ idRoom +'_'+datei +'_' + datef+','
         } 
-           
+        this.reservanding = true
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {
           name: this.name,
@@ -368,8 +389,8 @@
             price: 0,
           }).then(response => {}).catch(e => {console.log(e); this.showError = true})
         }
-        
         this.getReservations()
+        this.reservanding = false
         this.closeDialog()
         this.show = true
 
