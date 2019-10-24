@@ -3,6 +3,20 @@
         class="fill-height"
         fluid
       >
+      <v-snackbar
+      v-model="credentialValidation"
+      :color="snackBarColor"
+      :timeout="timeout"
+      top
+      >
+        {{credentialValidationText}}
+        <v-btn
+          dark
+          text
+          @click="credentialValidation = false">
+          <v-icon>mdi-close-circle-outline</v-icon>
+        </v-btn>
+      </v-snackbar>
         <v-row
           align="center"
           justify="center"
@@ -29,6 +43,7 @@
                     name="login"
                     prepend-icon="mdi-account"
                     type="text"
+                    :rules="usernameRules"
                   ></v-text-field>
 
                   <v-text-field
@@ -38,6 +53,8 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
+                    :rules="passwordRules"
+
                   ></v-text-field>
                 </v-form>
               </v-card-text>
@@ -57,6 +74,17 @@
       return {
         username: '',
         password:'',
+        snackBarColor:'primary',
+        credentialValidation: false,
+        credentialValidationText: '',
+        timeout: 4000,
+        usernameRules: [
+        v => !!v || 'El nombre de usuario es requerido',
+        ],
+        passwordRules:[
+        v => !!v || 'La contraseña es requerida',
+
+        ]
       }
     },
     methods:{
@@ -66,7 +94,15 @@
           password:this.password
         })
         .then(response => {
+          this.snackBarColor = 'success'
+          this.credentialValidationText = "Ha ingresado correctamente"
+          this.credentialValidation = true
           this.$router.push({name: 'home'})
+        })
+        .catch(error =>{
+          this.snackBarColor = 'error'
+          this.credentialValidationText = error.response.data
+          this.credentialValidation = true
         })
       },
     }
