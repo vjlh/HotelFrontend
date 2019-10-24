@@ -159,14 +159,14 @@
 </script>
 
 <style>
-  @import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-buttons/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-calendars/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-dropdowns/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-inputs/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-popups/styles/material.css";
-  @import "../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-base/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-buttons/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-calendars/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-dropdowns/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-inputs/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-navigations/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-popups/styles/material.css";
+  @import "../../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css";
   .e-schedule .e-timeline-month-view .e-resource-left-td {
         vertical-align: bottom;
         width: 250px;

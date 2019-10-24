@@ -371,6 +371,7 @@
           var idRoom = this.reservasFront[i].Habitacion
           this.reservasBack = this.reservasBack+ idRoom +'_'+datei +'_' + datef+','
         } 
+        console.log(this.reservasBack)
         this.reservanding = true
         await axios.post('http://157.245.12.218:8181/MingesoBackend/reservationHolders', 
         {

@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Rack from '../components/Rack';
-import Buttonnav from '../components/ButtonNav';
-import Footer from '../components/Footer';
+import Rack from '../components/Home/Rack';
+import Buttonnav from '../components/Home/ButtonNav';
+import Footer from '../components/Home/Footer';
 
 export default {
   components: {
