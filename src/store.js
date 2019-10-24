@@ -68,7 +68,7 @@ export default new Vuex.Store({
   actions: {
     retrieveUser(context, credentials){
       return new Promise((resolve,reject) => {
-        Axios.get('http://localhost:8090/users/login',{
+        Axios.get('http://157.245.12.218:8181/MingesoBackend/users/login',{
           params:{
           username: credentials.username,
           password: credentials.password

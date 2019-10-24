@@ -110,6 +110,20 @@
 
             </v-row>
               <label>Datos de la reserva</label>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon right color="primary" v-on="on">mdi-help-circle-outline</v-icon>
+                </template>
+                <span>Para escoger un rango de fechas para una reserva, debe seleccionar un dia de inicio y un dia de fin,</span><br/>
+                <span>las habitaciones disponibles se cargaran unicamente cuando se tenga el rango escogido, pudiendo</span><br/>
+                <span>asignar multiples habitaciones para el mismo rango de fechas. Seleccionadas las habitaciones</span><br/>
+                
+                <span>se oprime </span><v-btn x-small color="primary">+ añadir a la reserva</v-btn><span> y el calendario queda disponible para otra nueva selección</span><br/><br/>
+                <span>Cuando se tengan todas las habitaciones con sus respectivas fechas, debe oprimir </span>
+                <v-btn x-small color="success">Guardar</v-btn> <span> para</span><br/>
+                <span>generar la reserva</span>
+    
+              </v-tooltip>
 
             <v-row>
               <v-col cols="12" sm="7">
