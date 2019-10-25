@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios';
-import { reject } from 'q';
 
 Vue.use(Vuex,Axios)
 export default new Vuex.Store({
   state: {
+  editRoomDialog: false,
+  currentRoom: {},
   ownerDataSource:[],
   rooms:[],
   dataSource: [{EventName: "Reserva 2", StartTime:new Date(2019, 9, 18), EndTime:new Date(2019, 9, 29), RoomId:1, id:1, IsAllDay:true, Subject:"Reserva 1"},
@@ -23,13 +24,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    change(state,edit){
+      console.log(edit)
+      state.currentRoom = edit.room
+      state.editRoomDialog = edit.status
+      console.log(state.editRoomDialog)
+      console.log(state.currentRoom)
+    },
     async getRooms(state){
       await Axios
         .get('http://157.245.12.218:8181/MingesoBackend/rooms')
         .then(response => (state.ownerDataSource = response.data))
         console.log(state.ownerDataSource)
-
-        
     },
     async getReservations(state){
       state.reservations = []
@@ -99,7 +105,9 @@ export default new Vuex.Store({
     getReservations (context){
       context.commit('getReservations')
     },
-    
+    change (context,edit){
+      context.commit('change',edit)
+    },
     /*fixReservations (context){
       context.commit('fixReservations')
     },*/

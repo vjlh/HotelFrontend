@@ -75,6 +75,7 @@
                 label="Nombre"
                 v-model="name"
                 required
+                outlined
                 prepend-icon="mdi-account-outline"
                 :rules="nameRules">
                 </v-text-field>
@@ -89,6 +90,7 @@
                   :rules="rutRules"
                   counter = "12"
                   maxlength="12"
+                  outlined
                   prepend-icon="mdi-account-card-details-outline"
                   required
                 ></v-text-field>
@@ -100,6 +102,7 @@
                   label="Correo" 
                   v-model="email"
                   required
+                  outlined
                   prepend-icon="mdi-at"
                   counter = "50"
                   maxlength="50"
@@ -159,6 +162,7 @@
                   close
                   multiple
                   light
+                  outlined
                   :disabled="!roomStatus"
                   required
                   :loading="loading"

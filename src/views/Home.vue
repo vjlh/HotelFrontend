@@ -10,6 +10,7 @@
 import Rack from '../components/Home/Rack';
 import Buttonnav from '../components/Home/ButtonNav';
 import Footer from '../components/Home/Footer';
+import { mapMutations } from 'vuex';
 
 export default {
   components: {
@@ -17,8 +18,8 @@ export default {
     Buttonnav,
     Footer
   },
-  mounted(){
-    //this.$store.dispatch('fixReservations')
-  }
+  methods:{
+  },
+  
 };
 </script>
